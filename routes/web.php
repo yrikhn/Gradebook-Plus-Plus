@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\InstitutionController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -17,8 +17,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
+Route::get('dashboard','App\Http\Controllers\InstitutionController@index')->middleware(['auth'])->name('dashboard');
+Route::post('dashboard/create','App\Http\Controllers\InstitutionController@insert');
 
 require __DIR__.'/auth.php';

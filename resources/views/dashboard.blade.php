@@ -1,8 +1,3 @@
-@php
-    $institutions = array("BMS","TBZ","Bbc");
-
-@endphp
-
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
@@ -11,12 +6,12 @@
     </x-slot>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
 
-    @forelse ($institutions as $institution)
+    @forelse($institutions as $institution => $data)
         <div class="flex flex-col m-16">
             <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
                 <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
                     <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
-                        <div class="text-lg font-bold ml-6 mt-3 mb-3">{{ $institution }}</div>
+                        <div class="text-lg font-bold ml-6 mt-3 mb-3">{{ $data->institution }}</div>
                         <table class="min-w-full divide-y divide-gray-200">
                             <thead class="bg-gray-50">
                             <tr>
@@ -67,17 +62,16 @@
             </div>
         </div>
     @empty
-        <div class="bg-gray-200 border-2 relative text-gray-600 py-3 px-3 rounded-lg">
+        <div class="m-auto mt-12 text-center bg-gray-200 w-1/4 border-2 relative text-gray-600 py-3 px-3 rounded-lg">
             You dont have any institutions added yet!
         </div>
     @endforelse
-
 
     <div x-data="{ 'showModal': false }"
          @keydown.escape="showModal = false">
         <div class="flex items-center flex-col m-16">
             <button type="button" @click="showModal = true"
-                    class="p-6 bg-blue-600 rounded-md text-white w-1/3 font-bold shadow-2xl hover:bg-blue-700">Add
+                    class="p-5y bg-blue-600 rounded-md text-white w-1/4 h-16 font-bold shadow-2xl hover:bg-blue-700">Add
                 institution
             </button>
             <!-- Modal -->
@@ -103,20 +97,42 @@
                     </div>
                     <!-- content -->
                     <div class="flex flex-col flex-wrap m-12">
-                        <input class="rounded-md " type="text" placeholder="Institution">
-                        <button
-                            class="focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-opacity-50 rounded-md p-1.5 font-bold bg-blue-600 hover:bg-blue-700 text-white shadow-2xl block w-80 mt-2">
-                            Add
-                        </button>
+                        <form action="/dashboard/create" method="POST">
+                            @csrf
+                            <input class="rounded-md w-full" name="institution_name" type="text" placeholder="Institution">
+                            <button type="submit" class="focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-opacity-50 rounded-md p-1.5 font-bold bg-blue-600 hover:bg-blue-700 text-white shadow-2xl block w-80 mt-2">
+                                Add
+                            </button>
+                        </form>
 
                     </div>
                 </div>
             </div>
         </div>
-
     </div>
 
+
+    @if (Session::has('message'))
+        <div
+            class="{{ Session::get('alert-class', 'alert-info') }} fixed bottom-0 right-0 m-6 w-1/3 p-3.5 rounded alert alert-dismissible fade show"
+            role="alert">
+            {{ Session::get('message') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
+
+    @if ($errors->any())
+        @foreach ($errors->all() as $error)
+            <div class="bg-red-500 fixed bottom-0 right-0 m-6 w-1/3 p-3.5 rounded alert alert-dismissible fade show" role="alert">
+                {{ $error }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endforeach
+    @endif
+
 </x-app-layout>
+
+
 
 <script>
     feather.replace()
