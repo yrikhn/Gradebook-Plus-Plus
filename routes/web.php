@@ -20,4 +20,5 @@ Route::get('/', function () {
 Route::get('dashboard','App\Http\Controllers\InstitutionController@index')->middleware(['auth'])->name('dashboard');
 Route::post('dashboard/create','App\Http\Controllers\InstitutionController@insert');
 
+
 require __DIR__.'/auth.php';
