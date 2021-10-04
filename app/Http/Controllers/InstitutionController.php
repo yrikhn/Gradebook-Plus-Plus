@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Helpers\Helper;
 use App\Models\Institution;
+use App\Models\Subject;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
@@ -14,7 +16,8 @@ use Illuminate\Support\Facades\Session;
 class InstitutionController extends Controller {
     public function index() {
         $institutions = Institution::all();
-        return view('dashboard', compact('institutions'));
+        $subjects = Subject::all();
+        return view('dashboard', compact('institutions', 'subjects'));
     }
 
     public function insert(Request $request) {
@@ -26,6 +29,7 @@ class InstitutionController extends Controller {
         ]);
 
         $institution->institution = $request->input('institution_name');
+        $institution->user_id = Auth()->user()->id;
         $institution->save();
 
         if ($institution->save()) {

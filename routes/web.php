@@ -21,4 +21,6 @@ Route::get('dashboard','App\Http\Controllers\InstitutionController@index')->midd
 Route::post('dashboard/create','App\Http\Controllers\InstitutionController@insert');
 
 
+Route::post('dashboard/addSubject','App\Http\Controllers\SubjectController@addSubject');
+
 require __DIR__.'/auth.php';
