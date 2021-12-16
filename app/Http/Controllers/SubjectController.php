@@ -8,15 +8,17 @@ use Illuminate\Support\Facades\Session;
 
 class SubjectController extends Controller
 {
-    public function index()
-    {
-        $subjects = Subject::all();
-        return view('dashboard', compact('subjects'));
-    }
-
     public function addSubject(Request $request)
     {
         $subject = new Subject();
+
+        $subject->institution_id = $request->validate([
+            'institution' => 'required'
+        ]);
+
+        $subject->subject = $request->validate([
+            'subject' => 'required|max:20'
+        ]);
 
         $subject->institution_id = $request->input('institution');
         $subject->subject = $request->input('subject');

@@ -18,9 +18,10 @@ Route::get('/', function () {
 });
 
 Route::get('dashboard','App\Http\Controllers\InstitutionController@index')->middleware(['auth'])->name('dashboard');
-Route::post('dashboard/create','App\Http\Controllers\InstitutionController@insert');
 
 
+Route::post('dashboard/addInstitution','App\Http\Controllers\InstitutionController@addInstitution');
+Route::post('dashboard/addGrade','App\Http\Controllers\GradeController@addGrade');
 Route::post('dashboard/addSubject','App\Http\Controllers\SubjectController@addSubject');
 
 require __DIR__.'/auth.php';

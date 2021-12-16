@@ -5,13 +5,20 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Institution extends Model
+class Grade extends Model
 {
     use HasFactory;
 
-    public function subject() {
-        return $this->hasMany(Subject::class, 'institution_id');
-    }
+    /**
+     * @var array|mixed
+     */
 
-    //protected $table = 'institutions';
+
+    /**
+     * @var mixed
+     */
+
+    public function subject() {
+        return $this->belongsTo(Subject::class, 'subject_id');
+    }
 }
